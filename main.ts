@@ -1,38 +1,48 @@
-input.onButtonPressed(Button.A, function () {
-    LEVEL += 25
-    if (LEVEL > 100) {
-        LEVEL = 0
+function readCap () {
+    cap = pins.analogReadPin(AnalogPin.P1)
+    percentage = cap / 10.23
+    if (percentage >= 90) {
+        pins.digitalWritePin(DigitalPin.P2, 0)
+        pins.digitalWritePin(DigitalPin.P12, 0)
+        pins.digitalWritePin(DigitalPin.P16, 1)
+    } else if (percentage >= 10) {
+        pins.digitalWritePin(DigitalPin.P2, 1)
+        pins.digitalWritePin(DigitalPin.P12, 0)
+        pins.digitalWritePin(DigitalPin.P16, 0)
+    } else {
+        pins.digitalWritePin(DigitalPin.P2, 0)
+        pins.digitalWritePin(DigitalPin.P12, 1)
+        pins.digitalWritePin(DigitalPin.P16, 0)
     }
     led.plotBarGraph(
-    LEVEL,
-    100
+    cap,
+    1023
     )
+}
+input.onButtonPressed(Button.A, function () {
+    pins.analogWritePin(AnalogPin.P0, 1023)
+    pins.analogSetPeriod(AnalogPin.P0, 200)
 })
 input.onButtonPressed(Button.B, function () {
-    basic.showIcon(IconNames.Yes)
-    control.waitMicros(10)
-    pins.analogWritePin(AnalogPin.P0, 10.23 * LEVEL)
+    pins.analogWritePin(AnalogPin.P0, 0)
     pins.analogSetPeriod(AnalogPin.P0, 200)
-    led.plotBarGraph(
-    LEVEL,
-    100
-    )
 })
 function Reset () {
-    LEVEL = 0
-    pins.digitalWritePin(DigitalPin.P0, 0)
-    led.plotBarGraph(
-    LEVEL,
-    100
-    )
+    cap = 0
+    percentage = 0
+    pins.analogWritePin(AnalogPin.P0, 0)
+    pins.analogSetPeriod(AnalogPin.P0, 20000)
+    pins.digitalWritePin(DigitalPin.P2, 0)
+    pins.digitalWritePin(DigitalPin.P12, 0)
+    pins.digitalWritePin(DigitalPin.P16, 0)
 }
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     Reset()
 })
-let LEVEL = 0
-basic.showIcon(IconNames.SmallHeart)
-basic.showIcon(IconNames.Heart)
+let percentage = 0
+let cap = 0
 Reset()
 basic.forever(function () {
-	
+    readCap()
+    control.waitMicros(4)
 })

@@ -1,25 +1,46 @@
+def readCap():
+    global cap, percentage
+    cap = pins.analog_read_pin(AnalogPin.P1)
+    percentage = cap / 10.23
+    if percentage >= 90:
+        pins.digital_write_pin(DigitalPin.P0, 0)
+        pins.digital_write_pin(DigitalPin.P0, 0)
+        pins.digital_write_pin(DigitalPin.P0, 0)
+    elif percentage >= 10:
+        pass
+    else:
+        pass
+    led.plot_bar_graph(cap, 1023)
+
 def on_button_pressed_a():
-    global LEVEL
-    LEVEL += 25
-    if LEVEL > 100:
-        LEVEL = 0
-    led.plot_bar_graph(LEVEL, 100)
+    pins.analog_write_pin(AnalogPin.P0, 1023)
+    pins.analog_set_period(AnalogPin.P0, 200)
 input.on_button_pressed(Button.A, on_button_pressed_a)
 
 def on_button_pressed_b():
-    basic.show_icon(IconNames.YES)
-    control.wait_micros(10)
-    led.plot_bar_graph(LEVEL, 100)
-    pins.analog_write_pin(AnalogPin.P0, 10.23 * LEVEL)
+    pins.analog_write_pin(AnalogPin.P0, 0)
     pins.analog_set_period(AnalogPin.P0, 200)
 input.on_button_pressed(Button.B, on_button_pressed_b)
 
-LEVEL = 0
-LEVEL = 0
-basic.show_icon(IconNames.SMALL_HEART)
-basic.show_icon(IconNames.HEART)
-led.plot_bar_graph(LEVEL, 100)
+def Reset():
+    global cap, percentage
+    cap = 0
+    percentage = 0
+    pins.analog_write_pin(AnalogPin.P0, 0)
+    pins.analog_set_period(AnalogPin.P0, 20000)
+    pins.digital_write_pin(DigitalPin.P2, 0)
+    pins.digital_write_pin(DigitalPin.P12, 0)
+    pins.digital_write_pin(DigitalPin.P16, 0)
+
+def on_logo_pressed():
+    Reset()
+input.on_logo_event(TouchButtonEvent.PRESSED, on_logo_pressed)
+
+percentage = 0
+cap = 0
+Reset()
 
 def on_forever():
-    pass
+    readCap()
+    control.wait_micros(4)
 basic.forever(on_forever)
