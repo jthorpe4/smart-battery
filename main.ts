@@ -2,17 +2,17 @@ function readCap () {
     cap = pins.analogReadPin(AnalogPin.P1)
     percentage = cap / 10.23
     if (percentage >= 90) {
-        pins.digitalWritePin(DigitalPin.P2, 0)
-        pins.digitalWritePin(DigitalPin.P12, 0)
-        pins.digitalWritePin(DigitalPin.P16, 1)
+        pins.digitalWritePin(DigitalPin.P14, 1)
+        pins.digitalWritePin(DigitalPin.P15, 0)
+        pins.digitalWritePin(DigitalPin.P16, 0)
     } else if (percentage >= 10) {
-        pins.digitalWritePin(DigitalPin.P2, 1)
-        pins.digitalWritePin(DigitalPin.P12, 0)
+        pins.digitalWritePin(DigitalPin.P14, 0)
+        pins.digitalWritePin(DigitalPin.P15, 1)
         pins.digitalWritePin(DigitalPin.P16, 0)
     } else {
-        pins.digitalWritePin(DigitalPin.P2, 0)
-        pins.digitalWritePin(DigitalPin.P12, 1)
-        pins.digitalWritePin(DigitalPin.P16, 0)
+        pins.digitalWritePin(DigitalPin.P14, 0)
+        pins.digitalWritePin(DigitalPin.P15, 0)
+        pins.digitalWritePin(DigitalPin.P16, 1)
     }
     led.plotBarGraph(
     cap,
@@ -32,8 +32,8 @@ function Reset () {
     percentage = 0
     pins.analogWritePin(AnalogPin.P0, 0)
     pins.analogSetPeriod(AnalogPin.P0, 20000)
-    pins.digitalWritePin(DigitalPin.P2, 0)
-    pins.digitalWritePin(DigitalPin.P12, 0)
+    pins.digitalWritePin(DigitalPin.P14, 0)
+    pins.digitalWritePin(DigitalPin.P15, 0)
     pins.digitalWritePin(DigitalPin.P16, 0)
 }
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {

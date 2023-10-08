@@ -3,13 +3,17 @@ def readCap():
     cap = pins.analog_read_pin(AnalogPin.P1)
     percentage = cap / 10.23
     if percentage >= 90:
-        pins.digital_write_pin(DigitalPin.P0, 0)
-        pins.digital_write_pin(DigitalPin.P0, 0)
-        pins.digital_write_pin(DigitalPin.P0, 0)
+        pins.digital_write_pin(DigitalPin.P2, 0)
+        pins.digital_write_pin(DigitalPin.P12, 0)
+        pins.digital_write_pin(DigitalPin.P16, 1)
     elif percentage >= 10:
-        pass
+        pins.digital_write_pin(DigitalPin.P2, 1)
+        pins.digital_write_pin(DigitalPin.P12, 0)
+        pins.digital_write_pin(DigitalPin.P16, 0)
     else:
-        pass
+        pins.digital_write_pin(DigitalPin.P2, 0)
+        pins.digital_write_pin(DigitalPin.P12, 1)
+        pins.digital_write_pin(DigitalPin.P16, 0)
     led.plot_bar_graph(cap, 1023)
 
 def on_button_pressed_a():
